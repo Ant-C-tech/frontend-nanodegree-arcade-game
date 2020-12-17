@@ -121,12 +121,7 @@ Player.prototype.checkWin = function() {
 
 let allEnemies = [];
 for (let index = 0; index < NUMBER_OF_ENEMIES; index++) {
-    let bugY;
-    if (index < 3) {
-        bugY = (FIELD_TOP_BORDER + index * FIELD_CELL_HEIGHT);
-    } else {
-        bugY = (FIELD_TOP_BORDER + (index % 3) * FIELD_CELL_HEIGHT);
-    };
+    const bugY = (FIELD_TOP_BORDER + (index % 3) * FIELD_CELL_HEIGHT);
     const bug = new Enemy(_getRandomIntInclusive(ENEMY_START_MIN, ENEMY_START_MAX), bugY);
     allEnemies.push(bug);
 };
