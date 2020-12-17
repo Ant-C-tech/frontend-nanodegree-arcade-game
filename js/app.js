@@ -20,32 +20,40 @@ const PLAYER_WIDTH = 50;
 const BODY = document.querySelector('body');
 
 
-const Enemy = function (x, y) {
+const Enemy = function(x, y) {
     this.x = x;
     this.y = y;
     this.speedValue = _getRandomIntInclusive(MIN_ENEMY_SPEED, MAX_ENEMY_SPEED);
     this.sprite = 'images/enemy-bug.png';
 };
 
-Enemy.prototype.update = function (dt) {
+Enemy.prototype.update = function(dt) {
+    this.move(dt);
+    this.checkFinish();
+};
+
+Enemy.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Enemy.prototype.move = function(dt) {
     this.x = this.x + this.speedValue * dt;
+};
+
+Enemy.prototype.checkFinish = function() {
     if (this.x > ENEMY_FINISH) {
         this.x = _getRandomIntInclusive(ENEMY_START_MIN, ENEMY_START_MAX);
         this.speedValue = _getRandomIntInclusive(MIN_ENEMY_SPEED, MAX_ENEMY_SPEED);
     };
 };
 
-Enemy.prototype.render = function () {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
-const Player = function (x, y) {
+const Player = function(x, y) {
     this.x = x;
     this.y = y;
     this.sprite = "images/char-boy.png";
 };
 
-Player.prototype.update = function (dt) {
+Player.prototype.update = function() {
     for (const bug of allEnemies) {
         if (bug.y === this.y) {
             if (bug.x <= this.x + PLAYER_WIDTH && bug.x >= this.x - PLAYER_WIDTH) {
@@ -64,11 +72,11 @@ Player.prototype.update = function (dt) {
     };
 };
 
-Player.prototype.render = function () {
+Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Player.prototype.handleInput = function (key) {
+Player.prototype.handleInput = function(key) {
     this.lastX = this.x;
     this.lastY = this.y;
 
@@ -97,7 +105,6 @@ Player.prototype.handleInput = function (key) {
     };
 };
 
-
 let allEnemies = [];
 for (let index = 0; index < _getRandomIntInclusive(ENEMY_MIN, ENEMY_MAX); index++) {
     let bugY;
@@ -112,10 +119,10 @@ for (let index = 0; index < _getRandomIntInclusive(ENEMY_MIN, ENEMY_MAX); index+
 
 const player = new Player(PLAYER_START_X, PLAYER_START_Y);
 
-document.addEventListener('keydown', function (e) {
+document.addEventListener('keydown', function(e) {
     e.preventDefault();
 });
-document.addEventListener('keyup', function (e) {
+document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
         38: 'up',
