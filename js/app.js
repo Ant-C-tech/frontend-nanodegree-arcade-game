@@ -54,22 +54,7 @@ const Player = function(x, y) {
 };
 
 Player.prototype.update = function() {
-    for (const bug of allEnemies) {
-        if (bug.y === this.y) {
-            if (bug.x <= this.x + PLAYER_WIDTH && bug.x >= this.x - PLAYER_WIDTH) {
-                this.x = PLAYER_START_X;
-                this.y = PLAYER_START_Y;
-
-                _addMessage('Sorry! You lose!');
-            };
-        };
-    };
-    if (this.y < FIELD_TOP_BORDER) {
-        this.x = PLAYER_START_X;
-        this.y = PLAYER_START_Y;
-
-        _addMessage('Congratulations! You won!');
-    };
+    this.checkCollision();
 };
 
 Player.prototype.render = function() {
@@ -103,7 +88,32 @@ Player.prototype.handleInput = function(key) {
     if (this.y > PLAYER_START_Y) {
         this.y = this.lastY;
     };
+
+    this.checkWin();
 };
+
+Player.prototype.checkCollision = function() {
+    for (const bug of allEnemies) {
+        if (bug.y === this.y) {
+            if (bug.x <= this.x + PLAYER_WIDTH && bug.x >= this.x - PLAYER_WIDTH) {
+                this.x = PLAYER_START_X;
+                this.y = PLAYER_START_Y;
+
+                _addMessage('Sorry! You lose!');
+            };
+        };
+    };
+};
+
+Player.prototype.checkWin = function() {
+    if (this.y < FIELD_TOP_BORDER) {
+        this.x = PLAYER_START_X;
+        this.y = PLAYER_START_Y;
+
+        _addMessage('Congratulations! You won!');
+    };
+};
+
 
 let allEnemies = [];
 for (let index = 0; index < _getRandomIntInclusive(ENEMY_MIN, ENEMY_MAX); index++) {
