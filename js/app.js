@@ -12,6 +12,7 @@ const ENEMY_START_MAX = FIELD_LEFT_BORDER - 100;
 const ENEMY_FINISH = FIELD_RIGHT_BORDER + 200;
 const ENEMY_MIN = 3;
 const ENEMY_MAX = 9;
+const NUMBER_OF_ENEMIES = _getRandomIntInclusive(ENEMY_MIN, ENEMY_MAX);
 
 const PLAYER_START_X = 200;
 const PLAYER_START_Y = 400;
@@ -105,7 +106,6 @@ Player.prototype.checkCollision = function() {
             };
         };
     };
-    // console.log(this.allEnemies);
 };
 
 
@@ -120,7 +120,7 @@ Player.prototype.checkWin = function() {
 
 
 let allEnemies = [];
-for (let index = 0; index < _getRandomIntInclusive(ENEMY_MIN, ENEMY_MAX); index++) {
+for (let index = 0; index < NUMBER_OF_ENEMIES; index++) {
     let bugY;
     if (index < 3) {
         bugY = (FIELD_TOP_BORDER + index * FIELD_CELL_HEIGHT);
