@@ -47,9 +47,11 @@ Enemy.prototype.checkFinish = function() {
     };
 };
 
-const Player = function(x, y) {
+
+const Player = function(x, y, allEnemies) {
     this.x = x;
     this.y = y;
+    this.allEnemies = allEnemies
     this.sprite = "images/char-boy.png";
 };
 
@@ -93,7 +95,7 @@ Player.prototype.handleInput = function(key) {
 };
 
 Player.prototype.checkCollision = function() {
-    for (const bug of allEnemies) {
+    for (const bug of this.allEnemies) {
         if (bug.y === this.y) {
             if (bug.x <= this.x + PLAYER_WIDTH && bug.x >= this.x - PLAYER_WIDTH) {
                 this.x = PLAYER_START_X;
@@ -103,7 +105,9 @@ Player.prototype.checkCollision = function() {
             };
         };
     };
+    // console.log(this.allEnemies);
 };
+
 
 Player.prototype.checkWin = function() {
     if (this.y < FIELD_TOP_BORDER) {
@@ -127,7 +131,7 @@ for (let index = 0; index < _getRandomIntInclusive(ENEMY_MIN, ENEMY_MAX); index+
     allEnemies.push(bug);
 };
 
-const player = new Player(PLAYER_START_X, PLAYER_START_Y);
+const player = new Player(PLAYER_START_X, PLAYER_START_Y, allEnemies);
 
 document.addEventListener('keydown', function(e) {
     e.preventDefault();
